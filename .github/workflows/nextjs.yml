@@ -82,6 +82,8 @@ jobs:
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Check installed dependencies
         run: ls -la node_modules/.bin
+      - name: Ensure Next.js is installed
+        run: ${{ steps.detect-package-manager.outputs.manager }} install next
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.manager }} run next build && ${{ steps.detect-package-manager.outputs.manager }} run next export
       - name: Upload artifact
