@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: invoice-frontend
+        working-directory: ./invoice-frontend
       
     steps:
       - name: Checkout
