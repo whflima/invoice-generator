@@ -85,7 +85,7 @@ jobs:
       - name: Ensure Next.js is installed
         run: ${{ steps.detect-package-manager.outputs.manager }} install next
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.manager }} next build
+        run: ${{ steps.detect-package-manager.outputs.manager }} build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
