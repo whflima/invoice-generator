@@ -28,11 +28,13 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: invoice-frontend
+      
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          sparse-checkout: invoice-frontend
       - name: Detect package manager
         id: detect-package-manager
         run: |
