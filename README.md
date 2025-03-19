@@ -1,10 +1,12 @@
 <h1 align="center">Welcome to Invoice Generator 👋</h1>
 
+>
+
+### 🏠 [Homepage](https://whflima.github.io/invoice-generator/)
+
 <!--
 
 > This is my personal website, a place where you can learn more about my technical expertise, discover my projects, and follow my journey in software development, innovation, and problem-solving.
-
-### 🏠 [Homepage](https://whflima.github.io/invoice-generator/)
 
 ## Video demo
 
