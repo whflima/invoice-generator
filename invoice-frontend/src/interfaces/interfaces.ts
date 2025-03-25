@@ -36,7 +36,7 @@ interface InvoiceItemElements extends HTMLFormControlsCollection {
 }
 
 export interface Invoice {
-    template: string;
+  template: string;
   customer: Customer;
   items: InvoiceItem[];
   invoiceNumber: string;
@@ -62,6 +62,7 @@ export interface InvoiceItem {
   quatity: number;
 }
 
+/*
 interface Position {
   x: number;
   y: number;
@@ -85,3 +86,4 @@ interface Template {
   basePdf: string;
   columns: string[];
 }
+  */
