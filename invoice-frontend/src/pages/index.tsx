@@ -1,5 +1,7 @@
-import Modal from '@/components/Modal';
-import { Customer, CustomerForm, CustomForm, Invoice, InvoiceItem, InvoiceItemForm } from '@/interfaces/interfaces';
+import CustomerModal from '@/components/CustomerModal';
+import InvoiceItemModal from '@/components/InvoiceItemModal';
+import InvoiceItemsTable from '@/components/InvoiceItemsTable';
+import { Customer, CustomForm, Invoice, InvoiceItem } from '@/interfaces/interfaces';
 import { FormEvent, useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
 
@@ -16,43 +18,24 @@ export default function Home() {
     console.log(target.customer.value);
   };
 
-  const handleModalCustomerSubmit = (event: FormEvent<CustomerForm>) => {
-    event.preventDefault();
-    const target = event.currentTarget.elements;
-    const customer = invoice.customer || ({} as Customer);
-    customer.name = target.name.value;
-    customer.email = target.email.value;
-    customer.street = target.street.value;
-    customer.country = target.country.value;
-    customer.state = target.state.value;
-    customer.city = target.city.value;
-    customer.postalCode = target.postalCode.value;
-
-    invoice.customer = customer;
-    setInvoice(invoice);
+  const handleModalCustomerSubmit = (customer: Customer) => {
+    setInvoice({ ...invoice, customer });
     setOpenModalCustomer(false);
+    console.log(invoice.customer);
+    console.log(invoice.items);
   };
 
-  const handleModalItemsAdd = (event: FormEvent<InvoiceItemForm>) => {
-    event.preventDefault();
-    const target = event.currentTarget.elements;
+  const handleModalItemsAdd = (item: InvoiceItem) => {
     const invoiceItems = invoice.items || ([] as InvoiceItem[]);
-    const item = {} as InvoiceItem;
-    item.name = target.nameItem.value;
-    item.value = target.valueItem.value as unknown as number;
-    item.quatity = target.quatityItem.value as unknown as number;
     invoiceItems.push(item);
-
-    invoice.items = invoiceItems;
-    setInvoice(invoice);
-    setInvoiceItems(invoice.items);
+    setInvoice({ ...invoice, items: invoiceItems });
+    setInvoiceItems(invoiceItems);
     setOpenModalItems(false);
   };
 
   const handleInvoiceTypeChange: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
     const selectedOption = event.target.value;
-    invoice.template = selectedOption;
-    setInvoice(invoice);
+    setInvoice({ ...invoice, template: selectedOption });
     setTemplate(selectedOption);
     console.log(invoice);
   };
@@ -127,28 +110,7 @@ export default function Home() {
                     </div>
                     <div className="md:col-span-6">
                       <label htmlFor="">Items: </label>
-                      {!invoice.items ? (
-                        ''
-                      ) : (
-                        <table className="table-auto">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Value</th>
-                              <th>Quatity</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {invoiceItems.map((item, index) => (
-                              <tr key={index}>
-                                <td>{item.name}</td>
-                                <td>{item.value}</td>
-                                <td>{item.quatity}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      )}
+                      {invoiceItems.length > 0 && <InvoiceItemsTable items={invoiceItems} />}
                       <button
                         type="button"
                         name="items"
@@ -190,85 +152,16 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Modal open={openModalCustomer} onClose={() => setOpenModalCustomer(false)}>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl">Add customer</h1>
-          <form onSubmit={handleModalCustomerSubmit}>
-            <label htmlFor="">Customer name: </label>
-            <input type="text" name="name" id="name" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
-            <label htmlFor="">Email: </label>
-            <input type="text" name="email" id="email" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
-            <label htmlFor="">Street: </label>
-            <input type="text" name="street" id="street" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
-            <label htmlFor="">Country: </label>
-            <input
-              type="text"
-              name="country"
-              id="country"
-              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            />
-            <label htmlFor="">State: </label>
-            <input type="text" name="state" id="state" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
-            <label htmlFor="">City: </label>
-            <input type="text" name="city" id="city" className="h-10 border mt-1 rounded px-4 w-full bg-gray-50" />
-            <label htmlFor="">ZIP/Postal Code: </label>
-            <input
-              type="text"
-              name="postalCode"
-              id="postalCode"
-              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            />
-            <hr className="border-t-solid border-1 border-grey" />
-            <div className="flex flex-row justify-center">
-              <button
-                type="submit"
-                className="border border-neutral-300 rounded-lg py-1.5 px-10
-               bg-blue-500 hover:bg-blue-600 text-white"
-              >
-                Save
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
-      <Modal open={openModalItems} onClose={() => setOpenModalItems(false)}>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl">Add new item</h1>
-          <form onSubmit={handleModalItemsAdd}>
-            <label htmlFor="">Item name: </label>
-            <input
-              type="text"
-              name="nameItem"
-              id="itemName"
-              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            />
-            <label htmlFor="">Value: </label>
-            <input
-              type="number"
-              name="valueItem"
-              id="valueItem"
-              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            />
-            <label htmlFor="">Quatity: </label>
-            <input
-              type="number"
-              name="quatityItem"
-              id="quatityItem"
-              className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
-            />
-            <hr className="border-t-solid border-1 border-grey" />
-            <div className="flex flex-row justify-center">
-              <button
-                type="submit"
-                className="border border-neutral-300 rounded-lg py-1.5 px-10
-               bg-blue-500 hover:bg-blue-600 text-white"
-              >
-                Save
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
+      <CustomerModal
+        open={openModalCustomer}
+        onClose={() => setOpenModalCustomer(false)}
+        onAddCustomer={handleModalCustomerSubmit}
+      ></CustomerModal>
+      <InvoiceItemModal
+        open={openModalItems}
+        onClose={() => setOpenModalItems(false)}
+        onAddItem={handleModalItemsAdd}
+      ></InvoiceItemModal>
     </main>
   );
 }

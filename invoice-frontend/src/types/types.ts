@@ -1,3 +1,5 @@
+import { Customer, InvoiceItem } from "@/interfaces/interfaces";
+
 export type ModalPropTypes = {
   open: boolean;
   onClose: () => void;
@@ -11,4 +13,20 @@ export type ButtonProp = {
   onClicl: () => void;
   disabled: boolean;
 };
+
+export type InvoiceItemsTableProps = {
+  items: InvoiceItem[];
+}
+
+export type InvoiceItemModalProps = {
+  open: boolean;
+  onClose: () => void;
+  onAddItem: (item: InvoiceItem) => void;
+}
+
+export type CustomerModalPros = {
+  open: boolean;
+  onClose: () => void;
+  onAddCustomer: (customer: Customer) => void;
+}
 

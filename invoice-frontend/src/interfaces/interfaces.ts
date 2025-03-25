@@ -30,9 +30,9 @@ export interface InvoiceItemForm extends HTMLFormElement {
 }
 
 interface InvoiceItemElements extends HTMLFormControlsCollection {
-  nameItem: HTMLInputElement;
-  valueItem: HTMLInputElement;
-  quatityItem: HTMLInputElement;
+  name: HTMLInputElement;
+  value: HTMLInputElement;
+  quantity: HTMLInputElement;
 }
 
 export interface Invoice {
@@ -59,7 +59,7 @@ export interface Customer {
 export interface InvoiceItem {
   name: string;
   value: number;
-  quatity: number;
+  quantity: number;
 }
 
 /*
