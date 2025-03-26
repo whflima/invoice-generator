@@ -1,6 +1,7 @@
 import CustomerModal from '@/components/CustomerModal';
 import InvoiceItemModal from '@/components/InvoiceItemModal';
 import InvoiceItemsTable from '@/components/InvoiceItemsTable';
+import { CUSTOMER_EMPTY } from '@/constants/constants';
 import { Customer, CustomForm, Invoice, InvoiceItem } from '@/interfaces/interfaces';
 import { FormEvent, useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
@@ -21,8 +22,6 @@ export default function Home() {
   const handleModalCustomerSubmit = (customer: Customer) => {
     setInvoice({ ...invoice, customer });
     setOpenModalCustomer(false);
-    console.log(invoice.customer);
-    console.log(invoice.items);
   };
 
   const handleModalItemsAdd = (item: InvoiceItem) => {
@@ -58,16 +57,32 @@ export default function Home() {
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div className="md:col-span-6">
                       <label htmlFor="">Customer: </label>
-                      <button
-                        type="button"
-                        name="customer"
-                        id="customer"
-                        onClick={() => setOpenModalCustomer(true)}
-                        className="h-10  mt-1 w-full border border-neutral-300 rounded-lg py-2 px-10
+                      {!invoice.customer ? (
+                        <button
+                          type="button"
+                          name="customer"
+                          id="customer"
+                          onClick={() => setOpenModalCustomer(true)}
+                          className="h-10  mt-1 w-full border border-neutral-300 rounded-lg py-2 px-10
                bg-blue-500 hover:bg-blue-600 text-white flex justify-center"
-                      >
-                        <FaPlusCircle size={20} />
-                      </button>
+                        >
+                          <FaPlusCircle size={20} />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setOpenModalCustomer(true)}
+                          className="flex items-center gap-3 p-2 hover:bg-gray-300 rounded-lg w-full transition-colors duration-200 bg-gray-200"
+                        >
+                          <div className="flex justify-center py-2 w-10 h-10 rounded-full object-cover bg-gray-600 text-white ">
+                            <p className=" ">{invoice.customer?.name[0]}</p>
+                          </div>
+                          <div className="text-start">
+                            <p className="text-sm font-medium text-gray-800">{invoice.customer?.name || ''}</p>
+                            <p className="text-xs text-gray-500">{invoice.customer?.email || ''}</p>
+                          </div>
+                        </button>
+                      )}
                     </div>
                     <div className="md:col-span-2">
                       <label htmlFor="">Invoice template: </label>
@@ -153,6 +168,7 @@ export default function Home() {
         </div>
       </div>
       <CustomerModal
+        data={invoice.customer || CUSTOMER_EMPTY}
         open={openModalCustomer}
         onClose={() => setOpenModalCustomer(false)}
         onAddCustomer={handleModalCustomerSubmit}

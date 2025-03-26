@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { CUSTOMER_EMPTY } from '@/constants/constants';
 
 export default function CustomerModal(props: CustomerModalPros) {
-  const [customer, setCustomer] = useState<Customer>(CUSTOMER_EMPTY);
+  const [customer, setCustomer] = useState<Customer>(() => props.data);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -13,8 +13,17 @@ export default function CustomerModal(props: CustomerModalPros) {
   };
 
   const handleSubmit = () => {
-    console.log(customer);
-    props.onAddCustomer(customer);
+    const customerData = {
+      name: customer.name || props.data.name,
+      email: customer.email || props.data.email,
+      street: customer.street || props.data.street,
+      country: customer.country || props.data.country,
+      state: customer.state || props.data.state,
+      city: customer.city || props.data.city,
+      postalCode: customer.postalCode || props.data.postalCode,
+    };
+    console.log(customerData);
+    props.onAddCustomer(customerData);
     setCustomer(CUSTOMER_EMPTY);
     props.onClose();
   };
@@ -29,7 +38,7 @@ export default function CustomerModal(props: CustomerModalPros) {
             type="text"
             name="name"
             id="name"
-            value={customer.name}
+            value={customer.name || props.data.name}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
           />
@@ -38,7 +47,7 @@ export default function CustomerModal(props: CustomerModalPros) {
             type="text"
             name="email"
             id="email"
-            value={customer.email}
+            value={customer.email || props.data.email}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
           />
@@ -47,7 +56,7 @@ export default function CustomerModal(props: CustomerModalPros) {
             type="text"
             name="street"
             id="street"
-            value={customer.street}
+            value={customer.street || props.data.street}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
           />
@@ -56,7 +65,7 @@ export default function CustomerModal(props: CustomerModalPros) {
             type="text"
             name="country"
             id="country"
-            value={customer.country}
+            value={customer.country || props.data.country}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
           />
@@ -65,7 +74,7 @@ export default function CustomerModal(props: CustomerModalPros) {
             type="text"
             name="state"
             id="state"
-            value={customer.state}
+            value={customer.state || props.data.state}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
           />
@@ -74,7 +83,7 @@ export default function CustomerModal(props: CustomerModalPros) {
             type="text"
             name="city"
             id="city"
-            value={customer.city}
+            value={customer.city || props.data.city}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
           />
@@ -83,7 +92,7 @@ export default function CustomerModal(props: CustomerModalPros) {
             type="text"
             name="postalCode"
             id="postalCode"
-            value={customer.postalCode}
+            value={customer.postalCode || props.data.postalCode}
             onChange={handleChange}
             className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
           />

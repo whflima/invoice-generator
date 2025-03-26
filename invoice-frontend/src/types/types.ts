@@ -25,6 +25,7 @@ export type InvoiceItemModalProps = {
 }
 
 export type CustomerModalPros = {
+  data: Customer;
   open: boolean;
   onClose: () => void;
   onAddCustomer: (customer: Customer) => void;
