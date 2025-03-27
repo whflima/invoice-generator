@@ -1,12 +1,10 @@
-<h1 align="center">Welcome to Invoice Generator 👋</h1>
+<h1 align="center">Welcome to InvoiceGen - PDF Invoice Generator 👋</h1>
 
->
+> InvoiceGen is a web application that lets you create and download PDF invoices quickly and easily. Simply enter your details, customize the invoice, and generate a professional PDF in seconds.
 
 ### 🏠 [Homepage](https://whflima.github.io/invoice-generator/)
 
 <!--
-
-> This is my personal website, a place where you can learn more about my technical expertise, discover my projects, and follow my journey in software development, innovation, and problem-solving.
 
 ## Video demo
 
