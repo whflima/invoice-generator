@@ -37,7 +37,8 @@ interface InvoiceItemElements extends HTMLFormControlsCollection {
 
 export interface Invoice {
   template: string;
-  customer: Customer;
+  customerTo: Customer;
+  customerFrom: Customer;
   items: InvoiceItem[];
   invoiceNumber: string;
   invoiceDate: string;

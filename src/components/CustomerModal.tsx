@@ -31,9 +31,9 @@ export default function CustomerModal(props: CustomerModalPros) {
   return (
     <Modal open={props.open} onClose={props.onClose}>
       <div className="flex flex-col gap-4">
-        <h1 className="text-2xl">Add customer</h1>
+        <h1 className="text-2xl">{props.title}</h1>
         <form>
-          <label htmlFor="">Customer name: </label>
+          <label htmlFor="">Name: </label>
           <input
             type="text"
             name="name"

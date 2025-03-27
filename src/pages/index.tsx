@@ -10,7 +10,8 @@ export default function Home() {
   const [template, setTemplate] = useState<string>('invoice-blue.png');
   const [invoice, setInvoice] = useState<Invoice>({} as Invoice);
   const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([]);
-  const [openModalCustomer, setOpenModalCustomer] = useState<boolean>(false);
+  const [openModalCustomerFrom, setOpenModalCustomerFrom] = useState<boolean>(false);
+  const [openModalCustomerTo, setOpenModalCustomerTo] = useState<boolean>(false);
   const [openModalItems, setOpenModalItems] = useState<boolean>(false);
 
   const handleSubmit = (event: FormEvent<CustomForm>) => {
@@ -19,9 +20,14 @@ export default function Home() {
     console.log(target.customer.value);
   };
 
-  const handleModalCustomerSubmit = (customer: Customer) => {
-    setInvoice({ ...invoice, customer });
-    setOpenModalCustomer(false);
+  const handleModalCustomerToSubmit = (customer: Customer) => {
+    setInvoice({ ...invoice, customerTo: customer });
+    setOpenModalCustomerTo(false);
+  };
+
+  const handleModalCustomerFromSubmit = (customer: Customer) => {
+    setInvoice({ ...invoice, customerFrom: customer });
+    setOpenModalCustomerFrom(false);
   };
 
   const handleModalItemsAdd = (item: InvoiceItem) => {
@@ -45,8 +51,8 @@ export default function Home() {
         <div className="container max-w-screen-lg mx-auto">
           <div className="rounded shadow-lg p-4 px-4 md:p-8">
             <div className="text-gray-600">
-              <p className="font-medium text-lg">Titulo Aqui</p>
-              <p>Breve descricao</p>
+              <p className="font-medium text-lg">Invoice generator</p>
+              <p>Generate your invoice here.</p>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-5">
@@ -55,14 +61,14 @@ export default function Home() {
                 </div>
                 <div className="lg:col-span-3">
                   <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                    <div className="md:col-span-6">
-                      <label htmlFor="">Customer: </label>
-                      {!invoice.customer ? (
+                    <div className="md:col-span-3">
+                      <label htmlFor="">From: </label>
+                      {!invoice.customerFrom ? (
                         <button
                           type="button"
                           name="customer"
                           id="customer"
-                          onClick={() => setOpenModalCustomer(true)}
+                          onClick={() => setOpenModalCustomerFrom(true)}
                           className="h-10  mt-1 w-full border border-neutral-300 rounded-lg py-2 px-10
                bg-blue-500 hover:bg-blue-600 text-white flex justify-center"
                         >
@@ -71,15 +77,44 @@ export default function Home() {
                       ) : (
                         <button
                           type="button"
-                          onClick={() => setOpenModalCustomer(true)}
+                          onClick={() => setOpenModalCustomerFrom(true)}
                           className="flex items-center gap-3 p-2 hover:bg-gray-300 rounded-lg w-full transition-colors duration-200 bg-gray-200"
                         >
                           <div className="flex justify-center py-2 w-10 h-10 rounded-full object-cover bg-gray-600 text-white ">
-                            <p className=" ">{invoice.customer?.name[0]}</p>
+                            <p className=" ">{invoice.customerFrom?.name[0]}</p>
                           </div>
                           <div className="text-start">
-                            <p className="text-sm font-medium text-gray-800">{invoice.customer?.name || ''}</p>
-                            <p className="text-xs text-gray-500">{invoice.customer?.email || ''}</p>
+                            <p className="text-sm font-medium text-gray-800">{invoice.customerFrom?.name || ''}</p>
+                            <p className="text-xs text-gray-500">{invoice.customerFrom?.email || ''}</p>
+                          </div>
+                        </button>
+                      )}
+                    </div>
+                    <div className="md:col-span-3">
+                      <label htmlFor="">Billed to: </label>
+                      {!invoice.customerTo ? (
+                        <button
+                          type="button"
+                          name="customer"
+                          id="customer"
+                          onClick={() => setOpenModalCustomerTo(true)}
+                          className="h-10  mt-1 w-full border border-neutral-300 rounded-lg py-2 px-10
+               bg-blue-500 hover:bg-blue-600 text-white flex justify-center"
+                        >
+                          <FaPlusCircle size={20} />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setOpenModalCustomerTo(true)}
+                          className="flex items-center gap-3 p-2 hover:bg-gray-300 rounded-lg w-full transition-colors duration-200 bg-gray-200"
+                        >
+                          <div className="flex justify-center py-2 w-10 h-10 rounded-full object-cover bg-gray-600 text-white ">
+                            <p className=" ">{invoice.customerTo?.name[0]}</p>
+                          </div>
+                          <div className="text-start">
+                            <p className="text-sm font-medium text-gray-800">{invoice.customerTo?.name || ''}</p>
+                            <p className="text-xs text-gray-500">{invoice.customerTo?.email || ''}</p>
                           </div>
                         </button>
                       )}
@@ -168,11 +203,19 @@ export default function Home() {
         </div>
       </div>
       <CustomerModal
-        data={invoice.customer || CUSTOMER_EMPTY}
-        open={openModalCustomer}
-        onClose={() => setOpenModalCustomer(false)}
-        onAddCustomer={handleModalCustomerSubmit}
-      ></CustomerModal>
+        title="Add Customer From: "
+        data={invoice.customerFrom || CUSTOMER_EMPTY}
+        open={openModalCustomerFrom}
+        onClose={() => setOpenModalCustomerFrom(false)}
+        onAddCustomer={handleModalCustomerFromSubmit}
+      />
+      <CustomerModal
+        title="Add Billed To: "
+        data={invoice.customerTo || CUSTOMER_EMPTY}
+        open={openModalCustomerTo}
+        onClose={() => setOpenModalCustomerTo(false)}
+        onAddCustomer={handleModalCustomerToSubmit}
+      />
       <InvoiceItemModal
         open={openModalItems}
         onClose={() => setOpenModalItems(false)}
